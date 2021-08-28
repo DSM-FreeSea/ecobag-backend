@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import { ImagesModule } from './images/images.module';
 
 @Module({
-  imports: [],
+  imports: [ImagesModule],
   controllers: [],
   providers: [],
 })
