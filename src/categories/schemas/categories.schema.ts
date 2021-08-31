@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 
 @Schema()
-export class Category extends mongoose.Document {
+export class Categories extends mongoose.Document {
   @Prop({
     required: true,
     unique: true,
@@ -17,4 +17,4 @@ export class Category extends mongoose.Document {
   posts: [mongoose.Schema.Types.ObjectId];
 }
 
-export const CategorySchema = SchemaFactory.createForClass(Category);
+export const CategoriesSchema = SchemaFactory.createForClass(Categories);
