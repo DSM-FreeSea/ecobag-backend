@@ -9,6 +9,7 @@ import { Category, CategorySchema } from './schemas/category.schema';
       { name: Category.name, schema: CategorySchema },
     ]),
   ],
+  providers: [CategoriesRepository],
   exports: [CategoriesRepository],
 })
 export class CategoriesModule {}

@@ -7,10 +7,7 @@ import { CategoriesModule } from './categories/categories.module';
   imports: [
     ImagesModule,
     MongooseModule.forRoot(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
       useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
     }),
     CategoriesModule,
   ],
