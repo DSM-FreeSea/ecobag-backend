@@ -9,6 +9,10 @@ export class CategoriesRepository {
     @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
   ) {}
 
+  async create(name: string) {
+    return await this.categoryModel.create({ name });
+  }
+
   async findAll() {
     return await this.categoryModel.find();
   }
