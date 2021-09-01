@@ -17,16 +17,19 @@ export class Post extends mongoose.Document {
 
   @Prop({
     required: true,
+    default: 0,
   })
   views: number;
 
   @Prop({
     required: true,
+    default: 0,
   })
   likes: number;
 
   @Prop({
     required: true,
+    default: 0,
   })
   unlikes: number;
 
