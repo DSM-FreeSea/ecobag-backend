@@ -19,7 +19,7 @@ export class ImagesService {
     const filename = uuid();
 
     try {
-      await this.uploadS3(file.buffer, `${bucketS3}/${folder}`, filename);
+      await this.uploadS3(file.buffer, `${bucketS3}/${folder}`, filename + ext);
     } catch {
       throw new HttpException(
         'An error has occured.',
@@ -29,11 +29,7 @@ export class ImagesService {
 
     return {
       uploaded: true,
-      url: `https://${bucketS3}.s3.${
-        process.env.AWS_REGION
-      }.amazonaws.com/${folder}/${filename}${extname(
-        file.originalname,
-      ).toLowerCase()}`,
+      url: `https://${bucketS3}.s3.${process.env.AWS_REGION}.amazonaws.com/${folder}/${filename}${ext}`,
     };
   }
 
@@ -54,15 +50,17 @@ export class ImagesService {
     const uploadToS3 = files.map((file) => {
       const bucketS3 = process.env.AWS_S3_BUCKET;
       const filename = uuid();
+      const ext = extname(file.originalname).toLowerCase();
 
       locations.push(
-        `https://${bucketS3}.s3.${
-          process.env.AWS_REGION
-        }.amazonaws.com/${folder}/${filename}${extname(
-          file.originalname,
-        ).toLowerCase()}`,
+        `https://${bucketS3}.s3.${process.env.AWS_REGION}.amazonaws.com/${folder}/${filename}
+          ${ext}`,
       );
-      return this.uploadS3(file.buffer, `${bucketS3}/${folder}`, filename);
+      return this.uploadS3(
+        file.buffer,
+        `${bucketS3}/${folder}`,
+        filename + ext,
+      );
     });
     try {
       await Promise.all(uploadToS3);
