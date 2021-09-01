@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { ImagesModule } from './images/images.module';
 import { CategoriesModule } from './categories/categories.module';
+import { UsersModule } from './users/users.module';
 @Module({
   imports: [
     ImagesModule,
@@ -10,6 +11,7 @@ import { CategoriesModule } from './categories/categories.module';
       useUnifiedTopology: true,
     }),
     CategoriesModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],
