@@ -5,7 +5,39 @@ import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class ImagesService {
-  async uploadImage(files: Express.MulterS3.File[], folder: string) {
+  async uploadImage(file: Express.MulterS3.File, folder: string) {
+    const ext = extname(file.originalname).toLowerCase();
+    const regex = new RegExp(/(jpg)|(png)|(jpeg)/);
+    if (!regex.test(ext)) {
+      throw new HttpException(
+        `This file extension(${ext}) is not supported.`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const bucketS3 = process.env.AWS_S3_BUCKET;
+    const filename = uuid();
+
+    try {
+      await this.uploadS3(file.buffer, `${bucketS3}/${folder}`, filename);
+    } catch {
+      throw new HttpException(
+        'An error has occured.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    return {
+      uploaded: true,
+      url: `https://${bucketS3}.s3.${
+        process.env.AWS_REGION
+      }.amazonaws.com/${folder}/${filename}${extname(
+        file.originalname,
+      ).toLowerCase()}`,
+    };
+  }
+
+  async uploadImages(files: Express.MulterS3.File[], folder: string) {
     const locations = new Array<string>();
     const extCheck = files.map((file) => {
       const ext = extname(file.originalname).toLowerCase();
@@ -40,6 +72,7 @@ export class ImagesService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+    return { uploaded: true, urls: locations };
   }
 
   async uploadS3(file, bucket, name) {
