@@ -9,7 +9,7 @@ export class User extends mongoose.Document {
     unique: true,
     index: true,
   })
-  id: string;
+  uid: string;
 
   @Prop({
     required: true,
@@ -51,6 +51,12 @@ export class User extends mongoose.Document {
     default: 'guest',
   })
   role: string;
+
+  @Prop({
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'post',
+  })
+  liked_posts: [mongoose.Schema.Types.ObjectId];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

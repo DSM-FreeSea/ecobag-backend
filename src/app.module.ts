@@ -5,6 +5,8 @@ import { ImagesModule } from './images/images.module';
 import { PostsModule } from './posts/posts.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ConfigModule } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -16,6 +18,7 @@ import { ConfigModule } from '@nestjs/config';
     ImagesModule,
     PostsModule,
     CategoriesModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],
