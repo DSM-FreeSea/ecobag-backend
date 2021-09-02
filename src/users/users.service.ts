@@ -6,24 +6,21 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
+
   async create(createUserDto: CreateUserDto) {
     createUserDto.password = await bcrypt.hash(createUserDto.password, 13);
     return this.usersRepository.create(createUserDto);
-  }
-
-  findAll() {
-    return `This action returns all users`;
   }
 
   async findOne(uid: string) {
     return await this.usersRepository.findByUserId(uid);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(uid: string, updateUserDto: UpdateUserDto) {
+    return await this.usersRepository.findByUserIdAndUpdate(uid, updateUserDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(uid: string) {
+    return await this.usersRepository.findByUserIdAndDelete(uid);
   }
 }

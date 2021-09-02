@@ -15,15 +15,15 @@ export class UsersRepository {
     return await this.userModel.create(payload);
   }
 
-  async findAll() {
-    return await this.userModel.find();
-  }
-
   async findByUserId(uid: string) {
     return await this.userModel.findOne().where({ uid });
   }
 
   async findByUserIdAndUpdate(uid: string, UpdateUserDto: UpdateUserDto) {
     return await this.userModel.findOneAndUpdate({ uid }, UpdateUserDto);
+  }
+
+  async findByUserIdAndDelete(uid: string) {
+    return await this.userModel.findOneAndRemove({ uid });
   }
 }
