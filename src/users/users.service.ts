@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
@@ -16,8 +21,29 @@ export class UsersService {
     return await this.usersRepository.findByUserId(uid);
   }
 
+  async findOneWithoutPw(uid: string) {
+    return await this.usersRepository.findByUserId(uid, '-password');
+  }
+
   async update(uid: string, updateUserDto: UpdateUserDto) {
-    return await this.usersRepository.findByUserIdAndUpdate(uid, updateUserDto);
+    if (
+      !(
+        'name' in updateUserDto ||
+        'email' in updateUserDto ||
+        'password' in updateUserDto
+      ) ||
+      'uid' in updateUserDto
+    ) {
+      throw new BadRequestException();
+    }
+
+    const res = await this.usersRepository.findByUserIdAndUpdate(
+      uid,
+      updateUserDto,
+    );
+    if (!res) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
   }
 
   async remove(uid: string) {

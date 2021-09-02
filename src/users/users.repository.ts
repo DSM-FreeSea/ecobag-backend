@@ -15,8 +15,8 @@ export class UsersRepository {
     return await this.userModel.create(payload);
   }
 
-  async findByUserId(uid: string) {
-    return await this.userModel.findOne().where({ uid });
+  async findByUserId(uid: string, exclude: string = null) {
+    return await this.userModel.findOne().where({ uid }).select(exclude);
   }
 
   async findByUserIdAndUpdate(uid: string, UpdateUserDto: UpdateUserDto) {

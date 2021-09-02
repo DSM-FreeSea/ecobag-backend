@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -23,20 +24,20 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+  @Get()
+  findOne(@Request() req) {
+    return this.usersService.findOneWithoutPw(req.user.uid);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  @Patch()
+  update(@Request() req, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(req.user.uid, updateUserDto);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+  @Delete()
+  remove(@Request() req) {
+    return this.usersService.remove(req.user.uid);
   }
 }
