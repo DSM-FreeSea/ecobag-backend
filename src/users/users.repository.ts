@@ -20,7 +20,7 @@ export class UsersRepository {
   }
 
   async findByUserId(uid: string) {
-    return await this.userModel.find().where({ uid });
+    return await this.userModel.findOne().where({ uid });
   }
 
   async findByUserIdAndUpdate(uid: string, UpdateUserDto: UpdateUserDto) {
