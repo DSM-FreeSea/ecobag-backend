@@ -28,9 +28,7 @@ export class AuthService {
   }
 
   async login(payload: LoginDto) {
-    console.log(payload.uid, payload.password);
     const res = await this.validateUser(payload.uid, payload.password);
-    console.log(res);
 
     if (res === null) {
       throw new HttpException('Invalid user information', HttpStatus.NOT_FOUND);
